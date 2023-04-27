@@ -309,7 +309,11 @@ const RazorpayPaymentButton = ({
   }, [Razorpay])
   return (
     <div>
-      <button onClick={handlePayment} disabled={notReady || submitting}>
+      <button
+        className="w-full uppercase flex items-center justify-center min-h-[50px] px-5 py-[10px] text-small-regular border transition-colors duration-200 disabled:opacity-50 text-white bg-gray-900 border-gray-900 hover:bg-white hover:text-gray-900 disabled:hover:bg-gray-900 disabled:hover:text-white"
+        onClick={handlePayment}
+        disabled={notReady || submitting}
+      >
         Pay with Razorpay
       </button>
     </div>

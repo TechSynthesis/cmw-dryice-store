@@ -42,7 +42,7 @@ const plugins = [
     /** @type {import('@medusajs/admin').PluginOptions} */
     options: {
       autoRebuild: true,
-      path: "",
+      path: "app",
     },
   },
   {

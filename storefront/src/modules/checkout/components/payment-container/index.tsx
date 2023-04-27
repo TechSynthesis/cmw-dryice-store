@@ -31,8 +31,8 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
     description: "Secure payment with RazorPay",
   },
   manual: {
-    title: "Test payment",
-    description: "Test payment using medusa-payment-manual",
+    title: "COD payment",
+    description: "Cash On Delivery payment",
   },
 }
 
@@ -82,11 +82,7 @@ const PaymentElement = ({
 }) => {
   switch (paymentSession.provider_id) {
     case "razorpay":
-      return (
-        <div className="pt-8 pr-7">
-          <PaymentButton />
-        </div>
-      )
+      return <div className="pt-8 pr-7"></div>
     case "manual":
       // We only display the test payment form if we are in a development environment
       // return process.env.NODE_ENV === "development" ? <PaymentTest /> : null
