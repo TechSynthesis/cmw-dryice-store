@@ -8,7 +8,10 @@ import { NextPageWithLayout } from "types/global"
 const Profile: NextPageWithLayout = () => {
   return (
     <>
-      <Head title="Profile" description="View and edit your ACME profile." />
+      <Head
+        title="Profile"
+        description="View and edit your CMW CO2 Technologies profile."
+      />
       <ProfileTemplate />
     </>
   )

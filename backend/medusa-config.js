@@ -42,6 +42,7 @@ const plugins = [
     /** @type {import('@medusajs/admin').PluginOptions} */
     options: {
       autoRebuild: true,
+      path: "",
     },
   },
   {
@@ -70,9 +71,22 @@ const plugins = [
       return_action: "create_order", //'create_fulfillment' or 'create_order'(default) (required)
     },
   },
+  {
+    resolve: `medusa-payment-razorpay`,
+    options: {
+      api_key: process.env.RAZORPAY_API_KEY,
+      api_key_secret: process.env.RAZORPAY_API_KEY_SECRET,
+    },
+  },
 ];
 
 const modules = {
+  inventoryService: {
+    resolve: "@medusajs/inventory",
+  },
+  stockLocationService: {
+    resolve: "@medusajs/stock-location",
+  },
   /*eventBus: {
     resolve: "@medusajs/event-bus-redis",
     options: {

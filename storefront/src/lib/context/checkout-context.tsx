@@ -4,6 +4,7 @@ import {
   Address,
   Cart,
   Customer,
+  StorePostCartsCartPaymentSessionUpdateReq,
   StorePostCartsCartReq,
 } from "@medusajs/medusa"
 import Wrapper from "@modules/checkout/components/payment-wrapper"
@@ -16,6 +17,7 @@ import {
   useRegions,
   useSetPaymentSession,
   useUpdateCart,
+  useUpdatePaymentSession,
 } from "medusa-react"
 import { useRouter } from "next/router"
 import React, { createContext, useContext, useEffect, useMemo } from "react"
@@ -53,6 +55,10 @@ interface CheckoutContext {
   setSavedAddress: (address: Address) => void
   setShippingOption: (soId: string) => void
   setPaymentSession: (providerId: string) => void
+  updatePaymentSession: (
+    providerId: string,
+    data: StorePostCartsCartPaymentSessionUpdateReq
+  ) => void
   onPaymentCompleted: () => void
 }
 
@@ -87,6 +93,10 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     mutate: setPaymentSessionMutation,
     isLoading: settingPaymentSession,
   } = useSetPaymentSession(cart?.id!)
+  const {
+    mutate: updatePaymentSessionMutation,
+    isLoading: updatingPaymentSession,
+  } = useUpdatePaymentSession(cart?.id!)
 
   const { mutate: updateCart, isLoading: updatingCart } = useUpdateCart(
     cart?.id!
@@ -115,6 +125,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     return (
       addingShippingMethod ||
       settingPaymentSession ||
+      updatingPaymentSession ||
       updatingCart ||
       completingCheckout
     )
@@ -122,6 +133,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     addingShippingMethod,
     completingCheckout,
     settingPaymentSession,
+    updatingPaymentSession,
     updatingCart,
   ])
 
@@ -239,6 +251,25 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
     }
   }
 
+  const updatePaymentSession = (
+    providerId: string,
+    data: StorePostCartsCartPaymentSessionUpdateReq
+  ) => {
+    if (cart) {
+      updatePaymentSessionMutation(
+        {
+          provider_id: providerId,
+          ...data,
+        },
+        {
+          onSuccess: ({ cart }) => {
+            setCart(cart)
+          },
+        }
+      )
+    }
+  }
+
   const prepareFinalSteps = () => {
     initPayment()
 
@@ -263,6 +294,9 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
       company: address.company || "",
     })
   }
+  /**
+   * Update payment session for razorpay
+   */
 
   /**
    * Method that validates if the cart's region matches the shipping address's region. If not, it will update the cart region.
@@ -336,6 +370,7 @@ export const CheckoutProvider = ({ children }: CheckoutProviderProps) => {
           setShippingOption,
           setPaymentSession,
           onPaymentCompleted,
+          updatePaymentSession,
         }}
       >
         <Wrapper paymentSession={cart?.payment_session}>{children}</Wrapper>
