@@ -37,7 +37,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                 src={image.url}
                 layout="fill"
                 objectFit="cover"
-                className="absolute inset-0"
+                className="absolute inset-0 rounded-md"
                 alt="Thumbnail"
               />
             </button>
@@ -50,7 +50,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             <div
               ref={(image) => imageRefs.current.push(image)}
               key={image.id}
-              className="relative aspect-[29/34] w-full"
+              className="relative aspect-[29/34] w-full "
               id={image.id}
             >
               <Image
@@ -58,7 +58,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
                 layout="fill"
                 objectFit="cover"
                 priority={index <= 2 ? true : false}
-                className="absolute inset-0"
+                className="absolute inset-0 rounded-xl select-none"
                 alt={`Product image ${index + 1}`}
               />
             </div>

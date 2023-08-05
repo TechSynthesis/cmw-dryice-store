@@ -2,7 +2,7 @@ import { PaymentSession } from "@medusajs/medusa"
 import Radio from "@modules/common/components/radio"
 import clsx from "clsx"
 import React from "react"
-import PaymentStripe from "../payment-stripe"
+// import PaymentStripe from "../payment-stripe"
 import PaymentTest from "../payment-test"
 import PaymentButton from "../payment-button"
 
@@ -29,6 +29,10 @@ const PaymentInfoMap: Record<string, { title: string; description: string }> = {
   razorpay: {
     title: "RazorPay",
     description: "Secure payment with RazorPay",
+  },
+  ccavenue: {
+    title: "CCAvenue",
+    description: "Secure payment using CCAvenue",
   },
   manual: {
     title: "COD payment",
@@ -82,6 +86,8 @@ const PaymentElement = ({
 }) => {
   switch (paymentSession.provider_id) {
     case "razorpay":
+      return <div className="pt-8 pr-7"></div>
+    case "ccavenue":
       return <div className="pt-8 pr-7"></div>
     case "manual":
       // We only display the test payment form if we are in a development environment

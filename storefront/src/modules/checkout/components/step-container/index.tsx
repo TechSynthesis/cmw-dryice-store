@@ -23,7 +23,7 @@ const StepContainer = ({
   return (
     <div>
       <div
-        className={clsx("bg-white", className, {
+        className={clsx("bg-white rounded-xl", className, {
           "opacity-50 pointer-events-none select-none": state,
         })}
         {...props}

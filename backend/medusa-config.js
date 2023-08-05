@@ -23,7 +23,8 @@ try {
 
 // CORS when consuming Medusa from admin
 const ADMIN_CORS =
-  process.env.ADMIN_CORS || "http://localhost:7000,http://localhost:7001";
+  process.env.ADMIN_CORS ||
+  "http://localhost:7000,http://localhost:7001,http://localhost:9003";
 
 // CORS to avoid issues when consuming Medusa from a client
 const STORE_CORS = process.env.STORE_CORS || "http://localhost:8000";
@@ -56,21 +57,21 @@ const plugins = [
       fileLocation: "uploads/persistent/",
     },
   },
-  {
-    resolve: `medusa-fulfillment-shiprocket`,
-    options: {
-      channel_id: process.env.SHIPROCKET_CHANNEL_ID, //(required)
-      email: process.env.SHIPROCKET_EMAIL, //(required)
-      password: process.env.SHIPROCKET_PASSWORD, //(required)
-      token: "", //(required. leave empty)
-      pricing: "calculated", //"flat_rate" or "calculated" (required)
-      length_unit: "cm", //"mm", "cm" or "inches" (required)
-      multiple_items: "split_shipment", //"single_shipment" or "split_shipment"(default) (required)
-      inventory_sync: false, //true or false(default) (required)
-      forward_action: "create_order", //'create_fulfillment' or 'create_order'(default) (required)
-      return_action: "create_order", //'create_fulfillment' or 'create_order'(default) (required)
-    },
-  },
+  // {
+  //   resolve: `medusa-fulfillment-shiprocket`,
+  //   options: {
+  //     channel_id: process.env.SHIPROCKET_CHANNEL_ID, //(required)
+  //     email: process.env.SHIPROCKET_EMAIL, //(required)
+  //     password: process.env.SHIPROCKET_PASSWORD, //(required)
+  //     token: "", //(required. leave empty)
+  //     pricing: "calculated", //"flat_rate" or "calculated" (required)
+  //     length_unit: "cm", //"mm", "cm" or "inches" (required)
+  //     multiple_items: "split_shipment", //"single_shipment" or "split_shipment"(default) (required)
+  //     inventory_sync: false, //true or false(default) (required)
+  //     forward_action: "create_order", //'create_fulfillment' or 'create_order'(default) (required)
+  //     return_action: "create_order", //'create_fulfillment' or 'create_order'(default) (required)
+  //   },
+  // },
   {
     resolve: `medusa-payment-razorpay`,
     options: {

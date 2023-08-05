@@ -6,9 +6,10 @@ import Button from "@modules/common/components/button"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import X from "@modules/common/icons/x"
 import clsx from "clsx"
-import React, { Fragment, useMemo } from "react"
+import React, { Fragment, useMemo, useState } from "react"
 import { Product } from "types/medusa"
 import OptionSelect from "../option-select"
+import QuantitySelect from "../quantity-select"
 
 type MobileActionsProps = {
   product: Product
@@ -16,9 +17,10 @@ type MobileActionsProps = {
 }
 
 const MobileActions: React.FC<MobileActionsProps> = ({ product, show }) => {
-  const { variant, addToCart, options, inStock, updateOptions } = useProductActions()
+  const { variant, addToCart, options, inStock, updateOptions } =
+    useProductActions()
   const { state, open, close } = useToggleState()
-
+  const [quantity, setQuantity] = useState(1)
   const price = useProductPrice({ id: product.id, variantId: variant?.id })
 
   const selectedPrice = useMemo(() => {
@@ -80,7 +82,9 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product, show }) => {
                   <ChevronDown />
                 </div>
               </Button>
-              <Button onClick={addToCart}>{!inStock ? "Out of stock" : "Add to cart"}</Button>
+              <Button onClick={() => addToCart(quantity)}>
+                {!inStock ? "Out of stock" : "Add to cart"}
+              </Button>
             </div>
           </div>
         </Transition>
@@ -134,6 +138,14 @@ const MobileActions: React.FC<MobileActionsProps> = ({ product, show }) => {
                             </div>
                           )
                         })}
+                        {variant && (
+                          <div className="col-span-2 lg:col-span-3">
+                            <QuantitySelect
+                              quantity={quantity}
+                              setQuantity={setQuantity}
+                            />
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>

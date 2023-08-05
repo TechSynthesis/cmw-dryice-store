@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCheckout } from "@lib/context/checkout-context"
+import useToggleState from "@lib/hooks/use-toggle-state"
 import {
   PaymentSession,
   StorePostCartsCartPaymentSessionUpdateReq,
 } from "@medusajs/medusa"
 import Button from "@modules/common/components/button"
+import Modal from "@modules/common/components/modal"
 import Spinner from "@modules/common/icons/spinner"
 import { OnApproveActions, OnApproveData } from "@paypal/paypal-js"
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
-import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { useCart } from "medusa-react"
 import React, { useCallback, useEffect, useState } from "react"
 import useRazorpay, { RazorpayOptions } from "react-razorpay"
@@ -51,10 +53,12 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
       return (
         <RazorpayPaymentButton notReady={notReady} session={paymentSession} />
       )
-    case "stripe":
-      return (
-        <StripePaymentButton session={paymentSession} notReady={notReady} />
-      )
+    case "ccavenue":
+      return <CCPaymentButton notReady={notReady} session={paymentSession} />
+    // case "stripe":
+    //   return (
+    //     <StripePaymentButton session={paymentSession} notReady={notReady} />
+    //   )
     case "manual":
       return <ManualTestPaymentButton notReady={notReady} />
     case "paypal":
@@ -66,109 +70,49 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({ paymentSession }) => {
   }
 }
 
-const StripePaymentButton = ({
-  session,
-  notReady,
-}: {
-  session: PaymentSession
-  notReady: boolean
-}) => {
-  const [disabled, setDisabled] = useState(false)
-  const [submitting, setSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState<string | undefined>(
-    undefined
-  )
+// const StripePaymentButton = ({
+//   session,
+//   notReady,
+// }: {
+//   session: PaymentSession
+//   notReady: boolean
+// }) => {
+//   const [disabled, setDisabled] = useState(false)
+//   const [submitting, setSubmitting] = useState(false)
+//   const [errorMessage, setErrorMessage] = useState<string | undefined>(
+//     undefined
+//   )
 
-  const { cart } = useCart()
-  const { onPaymentCompleted } = useCheckout()
+//   const { cart } = useCart()
+//   const { onPaymentCompleted } = useCheckout()
 
-  const stripe = useStripe()
-  const elements = useElements()
-  const card = elements?.getElement("cardNumber")
+//   // const stripe = useStripe()
 
-  useEffect(() => {
-    if (!stripe || !elements) {
-      setDisabled(true)
-    } else {
-      setDisabled(false)
-    }
-  }, [stripe, elements])
+//   const handlePayment = async () => {
+//     setSubmitting(true)
 
-  const handlePayment = async () => {
-    setSubmitting(true)
+//     if (!cart) {
+//       setSubmitting(false)
+//       return
+//     }
+//   }
 
-    if (!stripe || !elements || !card || !cart) {
-      setSubmitting(false)
-      return
-    }
-
-    await stripe
-      .confirmCardPayment(session.data.client_secret as string, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            name:
-              cart.billing_address.first_name +
-              " " +
-              cart.billing_address.last_name,
-            address: {
-              city: cart.billing_address.city ?? undefined,
-              country: cart.billing_address.country_code ?? undefined,
-              line1: cart.billing_address.address_1 ?? undefined,
-              line2: cart.billing_address.address_2 ?? undefined,
-              postal_code: cart.billing_address.postal_code ?? undefined,
-              state: cart.billing_address.province ?? undefined,
-            },
-            email: cart.email,
-            phone: cart.billing_address.phone ?? undefined,
-          },
-        },
-      })
-      .then(({ error, paymentIntent }) => {
-        if (error) {
-          const pi = error.payment_intent
-
-          if (
-            (pi && pi.status === "requires_capture") ||
-            (pi && pi.status === "succeeded")
-          ) {
-            onPaymentCompleted()
-          }
-
-          setErrorMessage(error.message)
-          return
-        }
-
-        if (
-          (paymentIntent && paymentIntent.status === "requires_capture") ||
-          paymentIntent.status === "succeeded"
-        ) {
-          return onPaymentCompleted()
-        }
-
-        return
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
-  }
-
-  return (
-    <>
-      <Button
-        disabled={submitting || disabled || notReady}
-        onClick={handlePayment}
-      >
-        {submitting ? <Spinner /> : "Checkout"}
-      </Button>
-      {errorMessage && (
-        <div className="text-red-500 text-small-regular mt-2">
-          {errorMessage}
-        </div>
-      )}
-    </>
-  )
-}
+//   return (
+//     <>
+//       <Button
+//         disabled={submitting || disabled || notReady}
+//         onClick={handlePayment}
+//       >
+//         {submitting ? <Spinner /> : "Checkout"}
+//       </Button>
+//       {errorMessage && (
+//         <div className="text-red-500 text-small-regular mt-2">
+//           {errorMessage}
+//         </div>
+//       )}
+//     </>
+//   )
+// }
 
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ""
 
@@ -308,15 +252,99 @@ const RazorpayPaymentButton = ({
     razorpay.open()
   }, [Razorpay])
   return (
-    <div>
+    <>
       <button
-        className="w-full uppercase flex items-center justify-center min-h-[50px] px-5 py-[10px] text-small-regular border transition-colors duration-200 disabled:opacity-50 text-white bg-gray-900 border-gray-900 hover:bg-white hover:text-gray-900 disabled:hover:bg-gray-900 disabled:hover:text-white"
+        className="w-full uppercase flex items-center justify-center min-h-[50px] px-5 py-[10px] text-small-regular border transition-colors duration-200 disabled:opacity-50 text-white bg-gray-900 border-gray-900 hover:bg-white hover:text-gray-900 disabled:hover:bg-gray-900 disabled:hover:text-white rounded-full"
         onClick={handlePayment}
         disabled={notReady || submitting}
       >
         Pay with Razorpay
       </button>
-    </div>
+    </>
+  )
+}
+const CCPaymentButton = ({
+  session,
+  notReady,
+}: {
+  session: PaymentSession
+  notReady: boolean
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  )
+
+  const { cart } = useCart()
+  const { onPaymentCompleted, updatePaymentSession } = useCheckout()
+  const orderData = session.data as Record<string, string>
+
+  const [encReqURL, setEncReqURL] = React.useState("")
+  const [hasIFrameLoaded, setHasIFrameLoaded] = React.useState(false)
+  const handlePayment = useCallback(() => {
+    try {
+      setSubmitting(true)
+      setEncReqURL(orderData?.contents?.url)
+      onPaymentCompleted()
+      if (!cart) {
+        setSubmitting(false)
+        return false
+      }
+
+      return
+    } catch (error) {
+      console.error("there is an error")
+      setErrorMessage("Issue with payment")
+      setSubmitting(false)
+      return false
+    }
+  }, [])
+  return (
+    <>
+      <Button onClick={handlePayment} disabled={notReady || submitting}>
+        Checkout with CCAvenue
+      </Button>
+      <div>
+        {!hasIFrameLoaded && (
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">
+                <Spinner />{" "}
+              </span>
+            </div>
+          </div>
+        )}
+        {encReqURL && (
+          <div
+            className="modal-content "
+            style={{ height: "700px", width: "650px" }}
+          >
+            <Modal
+              size="large"
+              isOpen={submitting}
+              close={() => setSubmitting(false)}
+            >
+              <Modal.Title>Make Payment</Modal.Title>
+              <Modal.Body>
+                <div id="paymentDiv"></div>
+                <iframe
+                  title="ccavenue"
+                  onLoad={() => setHasIFrameLoaded(true)}
+                  width="100%"
+                  style={{
+                    height: `${hasIFrameLoaded ? "650px" : "0px"}`,
+                  }}
+                  scrolling="Yes"
+                  frameBorder="0"
+                  id="paymentFrame"
+                  src={encReqURL}
+                />
+              </Modal.Body>
+            </Modal>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 

@@ -15,7 +15,7 @@ const Item = ({ item, region }: ItemProps) => {
   const { updateItem, deleteItem } = useStore()
 
   return (
-    <div className="grid grid-cols-[122px_1fr] gap-x-4">
+    <div className="grid grid-cols-[122px_1fr] gap-x-4 rounded-xl">
       <div className="w-[122px]">
         <Thumbnail thumbnail={item.thumbnail} size="full" />
       </div>

@@ -21,7 +21,7 @@ const Items = ({ items, region, cartId }: ItemsProps) => {
         ? enrichedItems.map((item) => {
             return (
               <div className="grid grid-cols-[122px_1fr] gap-x-4" key={item.id}>
-                <div className="w-[122px]">
+                <div className="w-[122px] rounded-lg">
                   <Thumbnail thumbnail={item.thumbnail} size="full" />
                 </div>
                 <div className="flex flex-col justify-between flex-1">
