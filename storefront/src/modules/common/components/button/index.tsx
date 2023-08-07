@@ -18,11 +18,11 @@ const Button = ({
     <button
       {...props}
       className={clsx(
-        " rounded-full w-full uppercase flex items-center justify-center min-h-[50px] px-5 py-[10px] text-small-regular border transition-colors duration-200 disabled:opacity-50 ",
+        "rounded-xl w-full uppercase flex items-center justify-center min-h-[50px] px-5 py-[10px] text-small-regular border transition-colors duration-200 disabled:opacity-50",
         {
-          "text-white bg-[#363159] border-gray-900 hover:bg-white hover:text-gray-900 disabled:hover:bg-gray-900 disabled:hover:text-white":
+          "text-white bg-blue-900 border-blue-900 hover:bg-white hover:text-blue-900 disabled:hover:bg-blue-900 disabled:hover:text-white":
             variant === "primary",
-          "text-gray-900 bg-transparent border-gray-920 hover:bg-gray-100":
+          "text-blue-900 bg-transparent border-gray-920 hover:bg-blue-100":
             variant === "secondary",
         },
         className

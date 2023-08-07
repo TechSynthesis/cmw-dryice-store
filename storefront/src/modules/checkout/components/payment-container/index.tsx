@@ -2,9 +2,8 @@ import { PaymentSession } from "@medusajs/medusa"
 import Radio from "@modules/common/components/radio"
 import clsx from "clsx"
 import React from "react"
-// import PaymentStripe from "../payment-stripe"
+import PaymentStripe from "../payment-stripe"
 import PaymentTest from "../payment-test"
-import PaymentButton from "../payment-button"
 
 type PaymentContainerProps = {
   paymentSession: PaymentSession
@@ -85,6 +84,12 @@ const PaymentElement = ({
   paymentSession: PaymentSession
 }) => {
   switch (paymentSession.provider_id) {
+    // case "stripe":
+    //   return (
+    //     <div className="pt-8 pr-7">
+    //       <PaymentStripe />
+    //     </div>
+    //   )
     case "razorpay":
       return <div className="pt-8 pr-7"></div>
     case "ccavenue":

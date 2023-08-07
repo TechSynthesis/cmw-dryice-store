@@ -37,7 +37,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div>
-        <div className="relative z-0 w-full text-base-regular ">
+        <div className="relative z-0 w-full text-base-regular">
           <input
             type={inputType}
             name={name}

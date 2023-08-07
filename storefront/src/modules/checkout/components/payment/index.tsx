@@ -37,7 +37,6 @@ const Payment = () => {
     <StepContainer
       title="Payment"
       index={isSame ? 3 : 4}
-      className="h-fit"
       closedState={
         <div className="px-8 pb-8 text-small-regular">
           <p>Enter your address to see available payment options.</p>

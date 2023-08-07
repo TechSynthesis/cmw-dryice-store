@@ -39,14 +39,17 @@ const ImageOrPlaceholder = ({
     <Image
       src={image}
       alt="Thumbnail"
-      layout="fill"
-      objectFit="cover"
-      objectPosition="center"
       className="absolute inset-0 rounded-xl"
       draggable={false}
+      fill
+      sizes="100vw"
+      style={{
+        objectFit: "cover",
+        objectPosition: "center",
+      }}
     />
   ) : (
-    <div className="w-full h-full absolute inset-0 bg-gray-100 flex items-center justify-center">
+    <div className="w-full h-full absolute inset-0 bg-gray-100 flex items-center justify-center rounded-xl ">
       <PlaceholderImage size={size === "small" ? 16 : 24} />
     </div>
   )

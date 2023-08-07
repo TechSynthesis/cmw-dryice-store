@@ -9,7 +9,7 @@ import SkeletonProductPreview from "@modules/skeletons/components/skeleton-produ
 import clsx from "clsx"
 import { chunk } from "lodash"
 import Link from "next/link"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import React, { useState } from "react"
 
 const DropdownMenu = () => {
@@ -29,17 +29,15 @@ const DropdownMenu = () => {
       <div className="flex items-center h-full">
         <Popover className="h-full flex">
           <>
-            <Link href="/shop" passHref>
-              <a className="relative flex h-full">
-                <Popover.Button
-                  className={clsx(
-                    "relative h-full flex items-center transition-all ease-out duration-200"
-                  )}
-                  onClick={() => push("/store")}
-                >
-                  Store
-                </Popover.Button>
-              </a>
+            <Link href="/shop" className="relative flex h-full" passHref>
+              <Popover.Button
+                className={clsx(
+                  "relative h-full flex items-center transition-all ease-out duration-200"
+                )}
+                onClick={() => push("/store")}
+              >
+                Store
+              </Popover.Button>
             </Link>
 
             <Transition
@@ -72,13 +70,15 @@ const DropdownMenu = () => {
                               >
                                 {chunk.map((collection) => {
                                   return (
-                                    <div key={collection.id} className="pb-3">
+                                    <div
+                                      key={collection.handle}
+                                      className="pb-3"
+                                    >
                                       <Link
-                                        href={`/collections/${collection.id}`}
+                                        href={`/collections/${collection.handle}`}
+                                        onClick={() => setOpen(false)}
                                       >
-                                        <a onClick={() => setOpen(false)}>
-                                          {collection.title}
-                                        </a>
+                                        {collection.title}
                                       </Link>
                                     </div>
                                   )

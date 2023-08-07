@@ -20,9 +20,9 @@ const CartDropdown = () => {
   return (
     <div className="h-full z-50" onMouseEnter={open} onMouseLeave={close}>
       <Popover className="relative h-full">
-        <Link href="/cart" passHref>
-          <Popover.Button className="h-full">{`My Bag (${totalItems})`}</Popover.Button>
-        </Link>
+        <Popover.Button className="h-full">
+          <Link href="/cart">{`My Bag (${totalItems})`}</Link>
+        </Popover.Button>
         <Transition
           show={state}
           as={Fragment}
@@ -62,8 +62,9 @@ const CartDropdown = () => {
                                 <h3 className="text-base-regular overflow-ellipsis overflow-hidden whitespace-nowrap mr-4 w-[130px]">
                                   <Link
                                     href={`/products/${item.variant.product.handle}`}
+                                    legacyBehavior
                                   >
-                                    <a>{item.title}</a>
+                                    {item.title}
                                   </Link>
                                 </h3>
                                 <LineItemOptions variant={item.variant} />
@@ -108,9 +109,7 @@ const CartDropdown = () => {
                     </span>
                   </div>
                   <Link href="/cart" passHref>
-                    <a>
-                      <Button>Go to cart</Button>
-                    </a>
+                    <Button>Cart</Button>
                   </Link>
                 </div>
               </>
@@ -123,10 +122,10 @@ const CartDropdown = () => {
                   <span>Your cart is empty.</span>
                   <div>
                     <Link href="/store">
-                      <a>
+                      <>
                         <span className="sr-only">Go to all products page</span>
                         <Button onClick={close}>Explore products</Button>
-                      </a>
+                      </>
                     </Link>
                   </div>
                 </div>

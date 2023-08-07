@@ -35,10 +35,13 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
               <span className="sr-only">Go to image {index + 1}</span>
               <Image
                 src={image.url}
-                layout="fill"
-                objectFit="cover"
                 className="absolute inset-0 rounded-md"
                 alt="Thumbnail"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "cover",
+                }}
               />
             </button>
           )
@@ -50,16 +53,19 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
             <div
               ref={(image) => imageRefs.current.push(image)}
               key={image.id}
-              className="relative aspect-[29/34] w-full "
+              className="relative aspect-[29/34] w-full"
               id={image.id}
             >
               <Image
                 src={image.url}
-                layout="fill"
-                objectFit="cover"
                 priority={index <= 2 ? true : false}
                 className="absolute inset-0 rounded-xl select-none"
                 alt={`Product image ${index + 1}`}
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "cover",
+                }}
               />
             </div>
           )

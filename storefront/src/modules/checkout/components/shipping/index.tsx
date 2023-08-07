@@ -11,8 +11,8 @@ import { Controller, useForm } from "react-hook-form"
 import StepContainer from "../step-container"
 
 type ShippingOption = {
-  value: string
-  label: string
+  value?: string
+  label?: string
   price: string
 }
 
@@ -99,7 +99,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
       index={sameBilling ? 2 : 3}
       title="Delivery"
       closedState={
-        <div className="px-8 pb-8 text-small-regular ">
+        <div className="px-8 pb-8 text-small-regular">
           <p>Enter your address to see available delivery options.</p>
         </div>
       }
@@ -121,7 +121,7 @@ const Shipping: React.FC<ShippingProps> = ({ cart }) => {
                         key={option.value}
                         value={option.value}
                         className={clsx(
-                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border-b border-gray-200 last:border-b-0 px-8 ",
+                          "flex items-center justify-between text-small-regular cursor-pointer py-4 border-b border-gray-200 last:border-b-0 px-8",
                           {
                             "bg-gray-50": option.value === value,
                           }

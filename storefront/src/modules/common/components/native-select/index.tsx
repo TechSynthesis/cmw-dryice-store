@@ -55,17 +55,17 @@ const NativeSelect = forwardRef<HTMLSelectElement, NativeSelectProps>(
           onFocus={() => innerRef.current?.focus()}
           onBlur={() => innerRef.current?.blur()}
           className={clsx(
-            "relative flex items-center text-base-regular border border-gray-200 rounded-lg",
+            "relative flex items-center text-base-regular border border-blue-200 rounded-lg",
             className,
             {
-              "text-gray-500": isPlaceholder,
+              "text-blue-500": isPlaceholder,
             }
           )}
         >
           <select
             ref={innerRef}
             {...props}
-            className="appearance-none flex-1 bg-transparent border-none px-4 py-2.5 transition-colors duration-150 focus:border-gray-700 outline-none "
+            className="appearance-none flex-1 bg-transparent border-none px-4 py-2.5 transition-colors duration-150 focus:border-blue-700 outline-none"
           >
             <option value="">{placeholder}</option>
             {children}

@@ -1,7 +1,7 @@
 const SkeletonCartItem = () => {
   return (
     <div className="grid grid-cols-[122px_1fr] gap-x-4">
-      <div className="w-[122px] rounded-lg bg-gray-100 aspect-[29/34]"></div>
+      <div className="w-[122px] bg-gray-100 aspect-[29/34]"></div>
       <div className="text-base-regular flex flex-col gap-y-8">
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-y-2">
