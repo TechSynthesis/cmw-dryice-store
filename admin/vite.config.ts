@@ -2,6 +2,9 @@ import { defineConfig } from "vite";
 import dns from "dns";
 import react from "@vitejs/plugin-react";
 
+import { config } from "dotenv";
+config();
+
 // Resolve localhost for Node v16 and older.
 // @see https://vitejs.dev/config/server-options.html#server-host.
 dns.setDefaultResultOrder("verbatim");
@@ -10,7 +13,7 @@ dns.setDefaultResultOrder("verbatim");
 export default defineConfig({
   plugins: [react()],
   define: {
-    __BASE__: JSON.stringify("/app"),
-    __MEDUSA_BACKEND_URL__: JSON.stringify("http://localhost:9000"),
+    __BASE__: JSON.stringify("/app/"),
+    __MEDUSA_BACKEND_URL__: JSON.stringify(`${process.env.MEDUSA_BACKEND_URL}`),
   },
 });
