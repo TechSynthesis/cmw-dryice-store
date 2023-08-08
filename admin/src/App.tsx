@@ -17,7 +17,7 @@ console.log(__BASE__);
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path="app/" element={<IndexPage />} />
+      <Route path="/" element={<IndexPage />} />
       <Route path="a/*" element={<Dashboard />} />
       <Route path="invite" element={<InvitePage />} />
       <Route path="login" element={<LoginPage />} />
