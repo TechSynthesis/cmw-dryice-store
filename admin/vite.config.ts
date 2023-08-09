@@ -13,7 +13,7 @@ dns.setDefaultResultOrder("verbatim");
 export default defineConfig({
   plugins: [react()],
   define: {
-    __BASE__: JSON.stringify("/app"),
+    __BASE__: JSON.stringify("/"),
     __MEDUSA_BACKEND_URL__: JSON.stringify(`${process.env.MEDUSA_BACKEND_URL}`),
   },
 });
