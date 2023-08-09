@@ -17,13 +17,14 @@ const Hero = () => {
         </p>
         <UnderlineLink href="#start">Let&apos;s go </UnderlineLink>
       </div>
+      <div className="gradientBackground absolute inset-0 rounded-b-3xl z-0"></div>
       <Image
         src="/hero.jpg"
         loading="eager"
         priority={true}
         quality={90}
         alt="Photo of dry ice pellets"
-        className="absolute inset-0 rounded-b-3xl"
+        className="absolute inset-0 rounded-b-3xl z-0"
         draggable="false"
         fill
         sizes="100vw"
